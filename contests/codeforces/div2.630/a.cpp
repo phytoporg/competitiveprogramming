@@ -1,7 +1,3 @@
-//
-// didn't get this :(
-//
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -18,32 +14,20 @@ int main()
         int x, y, x1, y1, x2, y2;
         cin >> x >> y >> x1 >> y1 >> x2 >> y2;
 
-        int dx = b - a;
-        int dy = d - c;
-        int px = x + dx; int py = y + dy;
+        x += b - a;
+        y += d - c;
 
-        bool s{false};
-        if ((b > a && (x2 - x) >= (b - a)) ||
-            (b == a && 
-               ((x2 - x >= 1 || (x - x1 >= 1)) || (b == 0))) ||
-            (a > b && (x - x1) >= (a - b)))
+        const bool x0 = (a == b && b == 0);
+        const bool y0 = (c == d && d == 0);
+        if ((x >= x1 && x <= x2 && y >= y1 && y <= y2 && 
+            (x1 < x2 || x0) && (y1 < y2 || y0)))
         {
-            s = true;
+            cout << "Yes" << endl;
         }
-
-        if (s)
+        else
         {
-            if ((d > c && (y2 - y) >= (d - c)) ||
-                (d == c && 
-                    ((y2 - y >= 1 || (y - y1 >= 1)) || (d == 0))) ||
-                (c > d && (y - y1) >= (c - d)))
-            {
-                s = true;
-            }
+            cout << "No" << endl;
         }
-
-        if (s) cout << "Yes" << endl;
-        else cout << "No" << endl;
     }
 
     return 0;
