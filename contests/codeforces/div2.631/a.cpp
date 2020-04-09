@@ -20,7 +20,7 @@ int main()
         }
 
         int i{1};
-        while(x)
+        while(x || s.count(i))
         {
             if (!s.count(i))
             {

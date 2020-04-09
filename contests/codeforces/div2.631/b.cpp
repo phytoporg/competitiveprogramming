@@ -3,6 +3,37 @@ using namespace std;
 
 #define PRINTVAR(x) (cout << #x << " is " << (x) << endl)
 
+vector<bool> seen(200001, false);
+bool isSolution(const vector<int>& a, int p1, int p2)
+{
+    fill(begin(seen), begin(seen) + p1 + 1, false);
+    for (int i = 0; i < p1; ++i)
+    {
+        if (seen[a[i]]) { return false; }
+        else { seen[a[i]] = true; }
+    }
+
+    for (int i = 1; i <= p1; ++i)
+    {
+        if (!seen[i]) { return false; }
+    }
+
+    int n(a.size());
+    fill(begin(seen), begin(seen) + p2 + 1, false);
+    for (int i = p1; i < n; ++i)
+    {
+        if (seen[a[i]]) { return false; }
+        else { seen[a[i]] = true; }
+    }
+
+    for (int i = 1; i <= p2; ++i)
+    {
+        if (!seen[i]) { return false; }
+    }
+
+    return true;
+}
+
 int main()
 {
     int t; cin >> t;
@@ -10,30 +41,30 @@ int main()
     {
         int n; cin >> n;
         vector<int> a(n);
-        for (int& ai : a) { cin >> ai; }
 
-        vector<int> range(n, a[0]);
-        for (int i = 1; i < n; ++i) { range[i] = range[i - 1] + a[i]; }
+        int maxVal = -1;
+        for (int& ai : a) { cin >> ai; maxVal = max(ai, maxVal); }
 
-        vector<vector<int>> solutions;
-        for (int i = 0; i < n; ++i)
+        int x = maxVal;
+        int y = n - maxVal;
+
+        if (maxVal >= n)
         {
-            int lsum = (i + 1) * (i + 2) / 2;
-
-            int k    = (n - i - 1);
-            int rsum = k * (k + 1) / 2;
-            if (range[i] == lsum && (range[n - 1] - range[i]) == rsum)
-            {
-                solutions.push_back({i + 1, n - i - 1});
-            }
+            cout << "0\n";
+            continue;
         }
 
-        cout << solutions.size() << endl;
-        for (auto& solution : solutions)
-        {
-            cout << solution.front() << ' ' << solution.back() << endl;
-        }
+        bool one{isSolution(a, x, y)};
+        bool two{isSolution(a, y, x) && x != y};
+
+        if (one && two) { cout << "2\n" 
+                               << x << ' ' << y << '\n'
+                               << y << ' ' << x << '\n'; }
+        else if (one) { cout << "1\n" << x << ' ' << y << '\n'; }
+        else if (two) { cout << "1\n" << y << ' ' << x << '\n'; }
+        else { cout << '0' << '\n'; }
     }
 
     return 0;
 }
+
