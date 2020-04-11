@@ -49,29 +49,6 @@ int main()
     for (auto& col  : grid) { col.resize(B + 2, 0); }
     for (auto& cell : cells) { const auto [X, Y] = cell; grid[X+1][Y+1] = 1; }
 
-    //
-    // islands i = 2
-    // for x, y in grid
-    //   if this is a 1
-    //      for o in [above, behind]
-    //         if above is 0 and behind is 0: 
-    //             g[xy] = i
-    //             assure v[i] exists i.e. create it
-    //             v[i]  = &g[xy]
-    //         if above >1 and behind is 0
-    //             g[xy] = above
-    //         if above is 0 and behind > 1
-    //             g[xy] = behind
-    //         if above is >1 & behind >1 & above != behind
-    //             g[xy] = above
-    //             behind > above ? v[behind] = above : v[above] = behind
-    //
-    // num_islands = 0
-    // for c in v
-    //   i = index in v    
-    //   if v[i] == i: ++num_islands
-    //   
-
     uint32_t i = 2;
     vector<uint32_t> referenceMap;
     for (size_t x = 1; x <= A; ++x)
