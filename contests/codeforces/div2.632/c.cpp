@@ -9,35 +9,28 @@ int main()
 {
     int n; cin >> n;
 
-    vector<ll> a(n);
-    for(ll& ai : a) { cin >> ai; }
-
-    map<ll, int> freqs;
-    vector<ll> sums(n);
-    for (int i = 0; i < n; ++i)
-    {
-        if (i > 0) { sums[i] = sums[i - 1] + a[i]; }
-        else { sums[i] = a[i]; }
-
-        int si = sums[i];
-        if (!freqs.count(si)) { freqs[si] = 1; }
-        else { freqs[si]++; }
+    vector<ll> prefix(n + 1, 0);
+    for(int i = 0; i < n; ++i) {
+        int ai; cin >> ai; 
+        prefix[i + 1] = prefix[i] + ai;
     }
 
-    ll ideal = n * (n + 1) / 2;
-    ll total = ideal;
-    for (auto& [si, f] : freqs)
+    set<ll> s = {0};
+    int i{0}; int j{0};
+    ll answer{0};
+    while(i < n)
     {
-        if (si == 0) total -= f;
-        total -= (f - 1);
+        while(j < n && !s.count(prefix[j + 1]))
+        {
+            ++j;
+            s.insert(prefix[j]);
+        }
+        answer += j - i;
+        s.erase(prefix[i]);
+        ++i;
     }
 
-    if (total != ideal && sums.back() != 0)
-    {
-        --total;
-    }
-
-    cout << total << endl;
+    cout << answer << endl;
 
     return 0;
 }
