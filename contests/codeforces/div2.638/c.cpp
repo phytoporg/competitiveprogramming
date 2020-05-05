@@ -36,7 +36,7 @@ int main()
             {
                 cout << s[k - 1] << endl;
             }
-            else if (preset.size() == 1 && postset.size() == 1)
+            else if (preset.size() == 1 && postset.size() <= 1)
             {
                 int distrib{(n - k) / k + !!(n % k)};
                 cout << s[k - 1];
