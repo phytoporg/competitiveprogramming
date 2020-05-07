@@ -5,6 +5,35 @@ using namespace std;
 
 #define INDEX(r, c) ((c) * n + (r))
 
+void dfs(int r, int c, vector<vector<bool>>& visit, int n, int m)
+{
+    visit[r][c] = false;
+
+    auto good = [n, m, &visit](int row, int col)
+    {
+        return row >= 0 && row < n && col >= 0 && col < m;
+    };
+
+    using pp = pair<int, int>;
+    static pp offsets[] = 
+    {
+        {-1,  0},
+        { 0, -1},
+        { 0,  1},
+        { 1,  0},
+    };
+
+    for (auto [dr, dc] : offsets) 
+    {
+        int nr = r + dr;
+        int nc = c + dc;
+        if (good(nr, nc) && visit[nr][nc])
+        {
+            dfs(nr, nc, visit, n, m);
+        }
+    }
+}
+
 int main()
 {
     int n, m; cin >> n >> m;
@@ -55,20 +84,6 @@ int main()
         }
     }
 
-    auto good = [n, m, &visit](int r, int c)
-    {
-        return r >= 0 && r < n && c >= 0 && c < m;
-    };
-
-    using pp = pair<int, int>;
-    pp offsets[] = 
-    {
-        {-1,  0},
-        { 0, -1},
-        { 0,  1},
-        { 1,  0},
-    };
-
     int north{0};
     for (int r = 0; r < n; ++r)
     {
@@ -83,23 +98,7 @@ int main()
             if (!visit[r][c]) { continue; }
 
             ++north;
-            queue<pp> q;
-            q.push(make_pair(r, c));
-            while(!q.empty())
-            {
-                auto [cr, cc] = q.front();
-                q.pop();
-
-                visit[cr][cc] = false;
-                for (auto& [dr, dc] : offsets)
-                {
-                    int nr = cr + dr; int nc = cc + dc;
-                    if (good(nr, nc) && visit[nr][nc])
-                    {
-                        q.push(make_pair(nr, nc));
-                    }
-                }
-            }
+            dfs(r, c, visit, n, m);
         }
     }
 
